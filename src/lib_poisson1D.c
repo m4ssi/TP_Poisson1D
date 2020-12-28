@@ -6,8 +6,19 @@
 #include "lib_poisson1D.h"
 
 void set_GB_operator_rowMajor_poisson1D(double* AB, int *lab, int *la){
-
-  //TODO
+	int jj, ii1, ii2, ii3, ii4;
+	for (jj=0;jj<(*la);jj++){
+		ii1=jj;
+		ii2=(*la)+jj;
+		ii3=2*(*la)+jj;
+		ii4=3*(*la)+jj;
+		AB[ii1]=0.0;
+		AB[ii2]=-1.0;
+		AB[ii3]=2.0;
+		AB[ii4]=-1.0;
+	}
+	AB[*la]=0.0;
+	AB[4*(*la)-1]=0.0;
 }
 void set_GB_operator_colMajor_poisson1D(double* AB, int *lab, int *la, int *kv){
   int ii, jj, kk;
