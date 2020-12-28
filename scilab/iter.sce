@@ -60,7 +60,7 @@ function [relres] = gauss_seidel (A, D, E, F, b, seuil, maxit, m)
     relres = zeros (maxit, 1);
     x0 = zeros (m, 1); 
     r0 =  b - A*x0;    
-    while (i < (maxit+1))// && norm(r0) > seuil)
+    while (i < (maxit+1) && norm(r0) > seuil)
         x1 = iDE *F*x0 + iDE*b;
         r0 = b - A*x1;
         disp ( norm ( r0));
@@ -72,7 +72,11 @@ function [relres] = gauss_seidel (A, D, E, F, b, seuil, maxit, m)
 endfunction
 
 
-function test_jacobi (m, dim, seuil)
+// Fonction de test et de comparaison des convergences des methodes de Jacobi et Gauss-Seidel
+// \param	m		taille du probleme 
+// \param	it		nombre maximum d'iterations
+// \param	seuil	seuil du résidut
+function test_jacobi (m, it, seuil)
 
     A = init_poisson1D(m);
     D = init_poisson1D_D(m);
@@ -80,9 +84,9 @@ function test_jacobi (m, dim, seuil)
     F = init_poisson1D_F(m);
     b = init_poisson1D_b(m)
 
-    r_jacobi = jacobi (A,D,E,F,b, seuil, dim, m);
-    r_gs = gauss_seidel (A,D,E,F,b, seuil, dim, m);
-    step = [1:dim];
+    r_jacobi = jacobi (A,D,E,F,b, seuil, it, m);
+    r_gs = gauss_seidel (A,D,E,F,b, seuil, it, m);
+    step = [1:it];
     xtitle ( "Résidu relative");
     plot ( step, r_jacobi, "r-");
     plot ( step, r_gs, "b-");
