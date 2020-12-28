@@ -18,6 +18,7 @@ int main(int argc,char *argv[])
   double T0, T1;
   double *RHS, *EX_SOL, *X;
   double *AB;
+  double *L, *U;
 
   double temp, relres;
 
@@ -64,6 +65,17 @@ int main(int argc,char *argv[])
   else { // LAPACK_COL_MAJOR
     set_GB_operator_colMajor_poisson1D(AB, &lab, &la, &kv);
     //write_GB_operator_colMajor_poisson1D(AB, &lab, &la, "AB_col.dat");
+
+	L = (double *) calloc (la*lab, sizeof(double));
+	U = (double *) calloc (la*lab, sizeof(double));
+
+	tridiag_factorisation_LU ( AB, L, U, la, lab);
+
+	write_GB_operator_colMajor_poisson1D ( L, &lab, &la, "L_col.dat");
+	write_GB_operator_colMajor_poisson1D ( U, &lab, &la, "U_col.dat");
+
+	free(L);
+	free(U);
 
     info = LAPACKE_dgbsv(LAPACK_COL_MAJOR,la, kl, ku, NRHS, AB, lab, ipiv, RHS, la);
   }    

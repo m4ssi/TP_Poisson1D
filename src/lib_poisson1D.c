@@ -184,3 +184,20 @@ double richardson_alpha_opt(int *la){
 void richardson_alpha(double *AB, double *RHS, double *X, double *alpha_rich, int *lab, int *la,int *ku, int*kl, double *tol, int *maxit){
   //TODO
 }
+
+void tridiag_factorisation_LU ( double * AB, double * L, double * U, int la, int lab)	{
+	int jj, ak, bk, ck, kk, k;
+	U[2] = AB[2];
+	printf ("%lf %lf %lf\n", AB[1], AB[2], U[2]);
+	L[2] = 1;
+	for ( jj = 1; jj < la; jj++)	{
+		kk = jj*lab;
+		k = (jj-1)*lab;
+		U[k+3]=AB[k+3];
+		U[kk+2]=AB[kk+2]-((AB[kk+1]*AB[k+3])/U[k+2]);
+		
+		L[k+2] = 1;
+		L[k+1] = AB[kk+1]/U[k+2];
+	}
+	printf ("\n");
+}
